@@ -1,0 +1,35 @@
+spring:
+  profiles:
+    active: dev
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    platform: mysql
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      initial-size: 1
+      min-idle: 1
+      max-active: 20
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 30000
+      validation-query: select 1 from dual
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      filters: stat,wall,slf4j
+      connect-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+wx:
+  config:
+    appId: "wx3e27ee2b8839dffb"
+    appSecret: "998a35c708611f8d0c1db1d1942677fd"
+mybatis:
+  typeAliasesPackage: ltd.jezhu.promets.dao
+  mapperLocations: classpath:mapper/*.xml
+  configuration:
+    jdbc-type-for-null: varchar
+    default-fetch-size: 100
+    default-statement-timeout: 10
+server:
+  port: 80

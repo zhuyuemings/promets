@@ -42,6 +42,7 @@ public class WxLoginController {
             }
             return Response.success(in);
         } catch (SystemException e) {
+            e.printStackTrace();
             return Response.exception();
         }
     }

@@ -34,11 +34,11 @@ public class BaseDaoImpl implements BaseDao {
 
     private SqlSessionTemplate sqlSessionTemplate;
 
-//    @Autowired
-//    public BaseDaoImpl(SqlSessionTemplate sqlSessionTemplate) {
-//        Assert.notNull(sqlSessionTemplate, "sqlSessionTemplate must not be null!");
-//        this.sqlSessionTemplate = sqlSessionTemplate;
-//    }
+    @Autowired
+    public BaseDaoImpl(SqlSessionTemplate sqlSessionTemplate) {
+        Assert.notNull(sqlSessionTemplate, "sqlSessionTemplate must not be null!");
+        this.sqlSessionTemplate = sqlSessionTemplate;
+    }
 
     public BaseDaoImpl() {
     }

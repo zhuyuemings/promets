@@ -15,7 +15,7 @@ import org.springframework.util.Assert;
 @Component
 public class WxUserInfoDao {
 
-    private final static String NAMESPACE_PREFIX = "nm.user.";
+    private final static String NAMESPACE_PREFIX = "wx.userinfo.";
     private BaseDao baseDao;
 
     @Autowired
@@ -32,7 +32,7 @@ public class WxUserInfoDao {
      * @date 2019/3/22 16:17
      */
     public int saveWxUserInfo(WxUserInfoDTO dto) throws SystemException {
-        return baseDao.insert(NAMESPACE_PREFIX + "saveWxUserInfo");
+        return baseDao.insert(NAMESPACE_PREFIX + "saveWxUserInfo", dto);
     }
 
 }

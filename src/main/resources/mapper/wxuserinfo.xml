@@ -3,11 +3,59 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="wx.userinfo">
     <!-- 保存微信用户信息 -->
-    <insert id="saveWxUserInfo" parameterType="ltd.jezhu.promets.dto.user.WxUserInfoDTO">
-        insert into wx_user_info (
-            openid, nick_name, avatar_url, gender, country, province, city, language, user_id
-        ) values (
-            #{openid}, #{nickName}, #{avatarUrl}, #{gender}, #{country}, #{province}, #{city}, #{language}, #{userId}
-        )
+    <insert id="saveWxUserInfo" parameterType="ltd.jezhu.promets.wx.dto.user.WxUserInfoDTO">
+        insert into wx_user_info (openid, nick_name, avatar_url, gender, country, province, city, language, user_id)
+        values (#{openid}, #{nickName}, #{avatarUrl}, #{gender}, #{country}, #{province}, #{city}, #{language},
+                #{userId})
     </insert>
+    <!-- 根据openid查询用户信息 -->
+    <select id="getWxUserInfoByOpenid" parameterType="ltd.jezhu.promets.wx.dto.user.WxUserInfoDTO"
+            resultType="ltd.jezhu.promets.wx.dto.user.WxUserInfoDTO">
+        select openid,
+        nick_name as nickName,
+        avatar_url as avatarUrl,
+        gender,
+        country,
+        province,
+        city,
+        language,
+        user_id as userId
+        from wx_user_info
+        <where>
+            openid=#{openid}
+        </where>
+    </select>
+    <!-- 更新微信用户信息 -->
+    <update id="updateWxUserInfo" parameterType="ltd.jezhu.promets.wx.dto.user.WxUserInfoDTO">
+        update wx_user_info
+        <set>
+            <if test="null != nickName and nickName != ''">
+                nick_name=#{nickName},
+            </if>
+            <if test="null != avatarUrl and avatarUrl != ''">
+                avatar_url=#{avatarUrl},
+            </if>
+            <if test="null != gender">
+                gender=#{gender},
+            </if>
+            <if test="null != country and country != ''">
+                country=#{country},
+            </if>
+            <if test="null != province and province != ''">
+                province=#{province},
+            </if>
+            <if test="null != city and city != ''">
+                city=#{city},
+            </if>
+            <if test="null != language and language != ''">
+                language=#{language},
+            </if>
+            <if test="null != userId and userId != ''">
+                user_id=#{userId},
+            </if>
+        </set>
+        <where>
+            openid=#{openid}
+        </where>
+    </update>
 </mapper>

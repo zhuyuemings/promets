@@ -22,8 +22,9 @@ spring:
       connect-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
 wx:
   config:
-    appId: "wx3e27ee2b8839dffb"
-    appSecret: "998a35c708611f8d0c1db1d1942677fd"
+    appId: wx3e27ee2b8839dffb
+    appSecret: 998a35c708611f8d0c1db1d1942677fd
+    code2SessionBaseUrl: https://api.weixin.qq.com
 mybatis:
   typeAliasesPackage: ltd.jezhu.promets.dao
   mapperLocations: classpath:mapper/*.xml

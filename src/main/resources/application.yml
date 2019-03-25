@@ -21,7 +21,7 @@ spring:
       filters: stat,wall,slf4j
       connect-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
 wx:
-  config:
+  config: # Here may be warning cannot resolve property, Just run and it will be disappear.
     appId: wx3e27ee2b8839dffb
     appSecret: 998a35c708611f8d0c1db1d1942677fd
     code2SessionBaseUrl: https://api.weixin.qq.com
@@ -34,3 +34,9 @@ mybatis:
     default-statement-timeout: 10
 server:
   port: 80
+jwt:
+  config: # Here may be warning cannot resolve property, Just run and it will be disappear.
+    secret: a25c31c9-5220-4757-8f4b-b9b71acd0884
+    expires: 3600000
+    iss: iss
+    aud: aud

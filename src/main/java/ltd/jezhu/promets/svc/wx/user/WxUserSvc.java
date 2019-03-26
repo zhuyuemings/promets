@@ -1,5 +1,7 @@
 package ltd.jezhu.promets.svc.wx.user;
 
+import ltd.jezhu.promets.annotation.JwtTokenValidate;
+import ltd.jezhu.promets.common.util.IdUtils;
 import ltd.jezhu.promets.exception.SystemException;
 import ltd.jezhu.promets.dto.base.io.InParam;
 import ltd.jezhu.promets.dto.base.io.OutParam;
@@ -41,6 +43,7 @@ public class WxUserSvc {
      * @author ymzhu
      * @date 2019/3/23 1:52
      */
+    @JwtTokenValidate
     @RequestMapping("/synchronize")
     public OutParam<WxUserInfoDTO> synchronize(@RequestBody InParam<WxUserInfoDTO> inParam) {
         WxUserInfoDTO in = inParam.getBody();
@@ -61,6 +64,7 @@ public class WxUserSvc {
                 if (null == wxUserInfoDTO) {
                     return Response.success(in);
                 }
+                wxUserInfoDTO.setUserId(IdUtils.getUUID());
                 // 需要更新
                 if (wxUserInfoDao.updateWxUserInfo(wxUserInfoDTO) != 1) {
                     return Response.error("微信用户信息更新失败！");

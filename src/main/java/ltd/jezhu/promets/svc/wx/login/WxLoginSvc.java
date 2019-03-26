@@ -48,7 +48,7 @@ public class WxLoginSvc {
      * @date 2019/3/23 1:15
      */
     @RequestMapping("/jscode2session")
-    public OutParam<String> jscode2session(@RequestBody InParam<WxLoginDTO> inParam) {
+    public OutParam<WxLoginDTO> jscode2session(@RequestBody InParam<WxLoginDTO> inParam) {
         WxLoginDTO in = inParam.getBody();
         if (null == in || StringUtils.isBlank(in.getJscode())) {
             return Response.invalid();
@@ -63,7 +63,7 @@ public class WxLoginSvc {
             }
 
             String token = jwtService.createToken(wxSessionDTO.getOpenid(), wxSessionDTO.getSessionKey());
-            return Response.success(token);
+            return Response.success(new WxLoginDTO(token, wxSessionDTO.getOpenid()));
         } catch (Exception e) {
             e.printStackTrace();
             return Response.exception();

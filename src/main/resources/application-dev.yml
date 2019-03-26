@@ -5,4 +5,5 @@ spring:
     password: 123456
 logging:
   level: # SpringBoot默认配置了slf4j，不同目录下的日志可配置不同级别 info、debug、error、warn、trace
-    root: debug
+    root: info
+    ltd.jezhu.promets: debug

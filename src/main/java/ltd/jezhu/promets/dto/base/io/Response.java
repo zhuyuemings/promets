@@ -1,6 +1,9 @@
 package ltd.jezhu.promets.dto.base.io;
 
 
+import ltd.jezhu.promets.common.consts.ResponseConsts;
+import ltd.jezhu.promets.enums.ResponseCode;
+
 /**
  * 系统请求返回封装处理
  * @author ymzhu
@@ -8,47 +11,6 @@ package ltd.jezhu.promets.dto.base.io;
  */
 public class Response {
 
-    enum ResponseCode {
-        /**
-         * 成功
-         */
-        SUCCESS("0", "SUCCESS"),
-        /**
-         * 错误
-         */
-        ERROR("1", "ERROR"),
-        /**
-         * 异常
-         */
-        EXCEPTION("3", "EXCEPTION");
-        private String code;
-        private String name;
-
-        ResponseCode(String code, String name) {
-            this.code = code;
-            this.name = name;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public void setCode(String code) {
-            this.code = code;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-    }
-
-    private static final String MSG_INVALID = "入参不合法！";
-
-    private static final String MSG_EXCEPTION = "服务发生异常！";
 
     /**
      * 入参不合法
@@ -57,7 +19,7 @@ public class Response {
      * @date 2019/1/25 15:39
      */
     public static <T> OutParam<T> invalid() {
-        return error(MSG_INVALID);
+        return error(ResponseConsts.MSG_INVALID);
     }
 
     /**
@@ -68,7 +30,17 @@ public class Response {
      * @date 2019/1/25 15:53
      */
     public static <T> OutParam<T> invalid(T t) {
-        return error(MSG_INVALID, t);
+        return error(ResponseConsts.MSG_INVALID, t);
+    }
+
+    /**
+     * 错误返回
+     * @return {@link OutParam}
+     * @author ymzhu
+     * @date 2019/3/26 15:22
+     */
+    public static <T> OutParam<T> error() {
+        return OutParam.builder().returnCode(ResponseCode.Error.getCode()).returnMsg(ResponseConsts.MSG_ERROR).build();
     }
 
     /**
@@ -79,7 +51,7 @@ public class Response {
      * @date 2019/1/25 15:32
      */
     public static <T> OutParam<T> error(String msg) {
-        return OutParam.builder().returnCode(ResponseCode.ERROR.getCode()).returnMsg(msg).build();
+        return OutParam.builder().returnCode(ResponseCode.Error.getCode()).returnMsg(msg).build();
     }
 
     /**
@@ -91,7 +63,7 @@ public class Response {
      * @date 2019/1/25 15:53
      */
     public static <T> OutParam<T> error(String msg, T t) {
-        return OutParam.builder().returnCode(ResponseCode.ERROR.getCode()).returnMsg(msg).build(t);
+        return OutParam.builder().returnCode(ResponseCode.Error.getCode()).returnMsg(msg).build(t);
     }
 
     /**
@@ -101,7 +73,7 @@ public class Response {
      * @date 2019/1/25 15:52
      */
     public static <T> OutParam<T> exception() {
-        return exception(MSG_EXCEPTION);
+        return exception(ResponseConsts.MSG_EXCEPTION);
     }
 
     /**
@@ -112,7 +84,7 @@ public class Response {
      * @date 2019/1/25 15:55
      */
     public static <T> OutParam<T> exception(T t) {
-        return exception(MSG_EXCEPTION, t);
+        return exception(ResponseConsts.MSG_EXCEPTION, t);
     }
 
     /**
@@ -123,7 +95,7 @@ public class Response {
      * @date 2019/1/25 15:32
      */
     public static <T> OutParam<T> exception(String msg) {
-        return OutParam.builder().returnCode(ResponseCode.EXCEPTION.getCode()).returnMsg(msg).build();
+        return OutParam.builder().returnCode(ResponseCode.Exception.getCode()).returnMsg(msg).build();
     }
 
     /**
@@ -135,7 +107,7 @@ public class Response {
      * @date 2019/1/25 15:53
      */
     public static <T> OutParam<T> exception(String msg, T t) {
-        return OutParam.builder().returnCode(ResponseCode.EXCEPTION.getCode()).returnMsg(msg).build(t);
+        return OutParam.builder().returnCode(ResponseCode.Exception.getCode()).returnMsg(msg).build(t);
     }
 
     /**
@@ -147,6 +119,28 @@ public class Response {
      */
     public static <T> OutParam<T> success(T t) {
         return OutParam.builder().build(t);
+    }
+
+
+    /**
+     * 访问受限
+     * @return {@link OutParam}
+     * @author ymzhu
+     * @date 2019/3/26 10:41
+     */
+    public static <T> OutParam<T> unauthorized() {
+        return OutParam.builder().returnCode(ResponseCode.Unauthorized.getCode()).returnMsg(ResponseConsts.UNAUTHORIZED).build();
+    }
+
+    /**
+     * 访问受限
+     * @param msg msg
+     * @return {@link OutParam}
+     * @author ymzhu
+     * @date 2019/3/26 10:41
+     */
+    public static <T> OutParam<T> unauthorized(String msg) {
+        return OutParam.builder().returnCode(ResponseCode.Unauthorized.getCode()).returnMsg(msg).build();
     }
 
 }

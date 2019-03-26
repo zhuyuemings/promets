@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 /**
  * JSON Web Tokens 属性配置
@@ -23,7 +24,7 @@ public class JwtConfig {
     /**
      * jwt令牌超时时间(单位:秒)
      */
-    @NotEmpty
+    @NotNull
     private Long expires;
     /**
      * jwt令牌签发者

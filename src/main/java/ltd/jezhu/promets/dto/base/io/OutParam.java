@@ -1,5 +1,7 @@
 package ltd.jezhu.promets.dto.base.io;
 
+import ltd.jezhu.promets.enums.ResponseCode;
+
 /**
  * 出参
  * @author ymzhu
@@ -19,16 +21,16 @@ public class OutParam<T> {
      */
     private T data;
 
-    OutParam() {
-        this.code = Response.ResponseCode.SUCCESS.getCode();
-        this.message = Response.ResponseCode.SUCCESS.getName();
+    private OutParam() {
+        this.code = ResponseCode.Success.getCode();
+        this.message = ResponseCode.Success.getName();
     }
 
     public String getCode() {
         return code;
     }
 
-    void setCode(String code) {
+    public void setCode(String code) {
         this.code = code;
     }
 
@@ -36,7 +38,7 @@ public class OutParam<T> {
         return message;
     }
 
-    void setMessage(String message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 
@@ -44,7 +46,7 @@ public class OutParam<T> {
         return data;
     }
 
-    void setData(T data) {
+    public void setData(T data) {
         this.data = data;
     }
 
@@ -58,7 +60,7 @@ public class OutParam<T> {
     }
 
 
-    public static Builder builder() {
+    static Builder builder() {
         return new Builder();
     }
 
@@ -69,23 +71,23 @@ public class OutParam<T> {
         Builder() {
         }
 
-        public Builder returnCode(String code) {
+        Builder returnCode(String code) {
             this.out.setCode(code);
             return this;
         }
 
-        public Builder returnMsg(String message) {
+        Builder returnMsg(String message) {
             this.out.setMessage(message);
             return this;
         }
 
         @SuppressWarnings("unchecked")
-        public <T> OutParam<T> build() {
+        <T> OutParam<T> build() {
             return (OutParam<T>) this.out;
         }
 
         @SuppressWarnings("unchecked")
-        public <T> OutParam<T> build(T data) {
+        <T> OutParam<T> build(T data) {
             this.out.setData(data);
             return this.out;
         }

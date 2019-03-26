@@ -37,7 +37,22 @@ public class WxLoginDTO {
      * 加密算法的初始向量，详见 用户数据的签名验证和加解密
      */
     private String iv;
+    /**
+     * jwt令牌
+     */
+    private String token;
+    /**
+     * 微信小程序用户openid
+     */
+    private String openid;
 
+    public WxLoginDTO() {
+    }
+
+    public WxLoginDTO(String token, String openid) {
+        this.token = token;
+        this.openid = openid;
+    }
 
     public String getJscode() {
         return jscode;
@@ -87,6 +102,22 @@ public class WxLoginDTO {
         this.iv = iv;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getOpenid() {
+        return openid;
+    }
+
+    public void setOpenid(String openid) {
+        this.openid = openid;
+    }
+
     @Override
     public String toString() {
         return "WxLoginDTO{" +
@@ -96,6 +127,8 @@ public class WxLoginDTO {
                 ", signature='" + signature + '\'' +
                 ", encryptedData='" + encryptedData + '\'' +
                 ", iv='" + iv + '\'' +
+                ", token='" + token + '\'' +
+                ", openid='" + openid + '\'' +
                 '}';
     }
 }

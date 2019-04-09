@@ -8,9 +8,13 @@ package ltd.jezhu.promets.dto.wx.user;
 public class WxUserInfoDTO {
 
     /**
-     * openid
+     * 微信用户openId
      */
-    private String openid;
+    private String openId;
+    /**
+     * 微信用户unionid
+     */
+    private String unionId;
     /**
      * 用户昵称
      */
@@ -46,13 +50,29 @@ public class WxUserInfoDTO {
      * 系统用户ID
      */
     private String userId;
+    /**
+     * 包括敏感数据在内的完整用户信息的加密数据，详见 用户数据的签名验证和加解密
+     */
+    private String encryptedData;
+    /**
+     * 加密算法的初始向量，详见 用户数据的签名验证和加解密
+     */
+    private String iv;
 
-    public String getOpenid() {
-        return openid;
+    public String getOpenId() {
+        return openId;
     }
 
-    public void setOpenid(String openid) {
-        this.openid = openid;
+    public void setOpenId(String openId) {
+        this.openId = openId;
+    }
+
+    public String getUnionId() {
+        return unionId;
+    }
+
+    public void setUnionId(String unionId) {
+        this.unionId = unionId;
     }
 
     public String getNickName() {
@@ -119,19 +139,37 @@ public class WxUserInfoDTO {
         this.userId = userId;
     }
 
+    public String getEncryptedData() {
+        return encryptedData;
+    }
+
+    public void setEncryptedData(String encryptedData) {
+        this.encryptedData = encryptedData;
+    }
+
+    public String getIv() {
+        return iv;
+    }
+
+    public void setIv(String iv) {
+        this.iv = iv;
+    }
+
     @Override
     public String toString() {
         return "WxUserInfoDTO{" +
-                "openid='" + openid + '\'' +
+                "openId='" + openId + '\'' +
+                ", unionId='" + unionId + '\'' +
                 ", nickName='" + nickName + '\'' +
                 ", avatarUrl='" + avatarUrl + '\'' +
-                ", gender='" + gender + '\'' +
+                ", gender=" + gender +
                 ", country='" + country + '\'' +
                 ", province='" + province + '\'' +
                 ", city='" + city + '\'' +
                 ", language='" + language + '\'' +
                 ", userId='" + userId + '\'' +
+                ", encryptedData='" + encryptedData + '\'' +
+                ", iv='" + iv + '\'' +
                 '}';
     }
-
 }

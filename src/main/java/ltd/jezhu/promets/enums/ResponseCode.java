@@ -9,19 +9,19 @@ public enum ResponseCode {
     /**
      * 成功
      */
-    Success("0", "Success"),
+    Success("0", "success"),
     /**
      * 错误
      */
-    Error("1", "Error"),
+    Error("1", "error"),
     /**
      * 没有权限
      */
-    Exception("3", "Exception"),
+    Exception("3", "exception"),
     /**
      * 异常
      */
-    Unauthorized("401", "Unauthorized");
+    Unauthorized("401", "unauthorized");
 
     private String code;
     private String name;

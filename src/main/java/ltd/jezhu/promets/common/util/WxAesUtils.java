@@ -14,7 +14,7 @@ import java.security.Security;
  * @author ymzhu
  * @date 2019/3/26 17:01
  */
-public class WxAesUtils {
+class WxAesUtils {
 
     static {
         Security.addProvider(new BouncyCastleProvider());
@@ -29,7 +29,7 @@ public class WxAesUtils {
      * @author ymzhu
      * @date 2019/3/26 17:00
      */
-    public static byte[] decrypt(byte[] content, byte[] keyByte, byte[] ivByte) {
+    static byte[] decrypt(byte[] content, byte[] keyByte, byte[] ivByte) {
         try {
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS7Padding");
             Key sKeySpec = new SecretKeySpec(keyByte, "AES");

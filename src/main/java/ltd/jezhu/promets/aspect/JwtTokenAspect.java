@@ -4,7 +4,6 @@ import ltd.jezhu.promets.annotation.JwtTokenValidate;
 import ltd.jezhu.promets.common.util.SpringContextUtils;
 import ltd.jezhu.promets.exception.InvalidTokenException;
 import ltd.jezhu.promets.svc.wx.jwt.JwtService;
-import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Aspect;
@@ -56,9 +55,6 @@ public class JwtTokenAspect {
         logger.debug("进入切面，代理：" + signature);
         // 获取请求中包含的jwt令牌
         String token = SpringContextUtils.getToken();
-        if (StringUtils.isBlank(token)) {
-            throw new InvalidTokenException("缺失令牌！");
-        }
         if (!jwtService.verifyToken(token)) {
             throw new InvalidTokenException("令牌校验失败！");
         }

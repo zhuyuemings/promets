@@ -65,7 +65,7 @@ public class JwtUtils {
      * @author ymzhu
      * @date 2019/3/25 17:14
      */
-    public static Map<String, Claim> verify(String secret, String token) {
+    private static Map<String, Claim> verify(String secret, String token) {
         if (StringUtils.isAnyBlank(secret, token)) {
             return null;
         }

@@ -45,6 +45,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = Exception.class)
     public OutParam errorHandler(Exception e) {
+        e.printStackTrace();
         if (e instanceof InvalidTokenException) {
             return Response.unauthorized(e.getMessage());
         } else if (e instanceof ServiceException) {

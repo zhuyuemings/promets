@@ -4,14 +4,16 @@
 <mapper namespace="wx.userinfo">
     <!-- 保存微信用户信息 -->
     <insert id="saveWxUserInfo" parameterType="ltd.jezhu.promets.dto.wx.user.WxUserInfoDTO">
-        insert into wx_user_info (openid, nick_name, avatar_url, gender, country, province, city, language, user_id)
-        values (#{openid}, #{nickName}, #{avatarUrl}, #{gender}, #{country}, #{province}, #{city}, #{language},
+        insert into wx_user_info (openid, unionid, nick_name, avatar_url, gender, country, province, city, language, user_id)
+        values (#{openId}, #{unionId}, #{nickName}, #{avatarUrl}, #{gender}, #{country}, #{province}, #{city}, #{language},
                 #{userId})
     </insert>
     <!-- 根据openid查询用户信息 -->
     <select id="getWxUserInfoByOpenid" parameterType="ltd.jezhu.promets.dto.wx.user.WxUserInfoDTO"
             resultType="ltd.jezhu.promets.dto.wx.user.WxUserInfoDTO">
-        select openid,
+        select
+        openid as openId,
+        unionid as unionId,
         nick_name as nickName,
         avatar_url as avatarUrl,
         gender,
@@ -22,13 +24,16 @@
         user_id as userId
         from wx_user_info
         <where>
-            openid=#{openid}
+            openid=#{openId}
         </where>
     </select>
     <!-- 更新微信用户信息 -->
     <update id="updateWxUserInfo" parameterType="ltd.jezhu.promets.dto.wx.user.WxUserInfoDTO">
         update wx_user_info
         <set>
+            <if test="null != unionId and unionId != ''">
+                unionid=#{unionId},
+            </if>
             <if test="null != nickName and nickName != ''">
                 nick_name=#{nickName},
             </if>
@@ -55,7 +60,7 @@
             </if>
         </set>
         <where>
-            openid=#{openid}
+            openid=#{openId}
         </where>
     </update>
 </mapper>

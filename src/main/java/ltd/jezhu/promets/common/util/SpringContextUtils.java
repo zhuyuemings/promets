@@ -2,6 +2,8 @@ package ltd.jezhu.promets.common.util;
 
 import ltd.jezhu.promets.common.consts.JwtConsts;
 import ltd.jezhu.promets.common.consts.SystemConsts;
+import ltd.jezhu.promets.exception.InvalidTokenException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -80,7 +82,11 @@ public class SpringContextUtils implements ApplicationContextAware {
         if (null == request) {
             return null;
         }
-        return request.getHeader(JwtConsts.JWT_TOKEN_IN_HEADER);
+        String token = request.getHeader(JwtConsts.JWT_TOKEN_IN_HEADER);
+        if (StringUtils.isBlank(token)) {
+            throw new InvalidTokenException("缺失令牌！");
+        }
+        return token;
     }
 
 }

@@ -2,28 +2,46 @@ package ltd.jezhu.promets.common.util;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import ltd.jezhu.promets.exception.WxAesException;
 import org.apache.commons.lang3.StringUtils;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
-class WXBizDataCrypt {
+/**
+ * 微信用户信息解密工具
+ * @author ymzhu
+ * @date 2019/4/9 9:12
+ */
+public class WxBizDataCrypt {
 
-    // 非法密钥
-    private final static String illegalAesKey = "-41001";
-    // 非法初始向量
-    private final static String illegalIv = "-41002";
-    // 非法密文
-    private final static String illegalBuffer = "-41003";
-    // 解码错误
-    private final static String decodeBase64Error = "-41004";
-    // 数据不正确
-    private final static String noData = "-41005";
+    /**
+     * 非法密钥
+     */
+    private final static String ILLEGAL_AES_KEY = "-41001";
+    /**
+     * 非法初始向量
+     */
+    private final static String ILLEGAL_IV = "-41002";
+    /**
+     * 非法密文
+     */
+    private final static String ILLEGAL_BUFFER = "-41003";
+    /**
+     * 解码错误
+     */
+    private final static String DECODE_BASE_64_ERROR = "-41004";
+    /**
+     * 数据不正确
+     */
+    private final static String NO_DATA = "-41005";
+    private final static int IV_LENGTH = 24;
+    private final static int KEY_LENGTH = 24;
 
     private String appid;
     private String sessionKey;
 
-    public WXBizDataCrypt(String appid, String sessionKey) {
+    public WxBizDataCrypt(String appid, String sessionKey) {
         this.appid = appid;
         this.sessionKey = sessionKey;
     }
@@ -35,33 +53,29 @@ class WXBizDataCrypt {
      * @return String 返回用户信息
      */
     public String decryptData(String encryptedData, String iv) {
-        if (StringUtils.length(sessionKey) != 24) {
-            return illegalAesKey;
+        if (StringUtils.length(sessionKey) != KEY_LENGTH) {
+            throw new WxAesException("非法密钥", ILLEGAL_AES_KEY);
         }
         // 对称解密秘钥 aeskey = Base64_Decode(session_key), aeskey 是16字节。
         byte[] aesKey = Base64.getDecoder().decode(sessionKey);
-
-        if (StringUtils.length(iv) != 24) {
-            return illegalIv;
+        if (StringUtils.length(iv) != IV_LENGTH) {
+            throw new WxAesException("非法初始向量", ILLEGAL_IV);
         }
         // 对称解密算法初始向量 为Base64_Decode(iv)，其中iv由数据接口返回。
         byte[] aesIV = Base64.getDecoder().decode(iv);
-
         // 对称解密的目标密文为 Base64_Decode(encryptedData)
         byte[] aesCipher = Base64.getDecoder().decode(encryptedData);
-
         byte[] resultByte = WxAesUtils.decrypt(aesCipher, aesKey, aesIV);
         if (null != resultByte && resultByte.length > 0) {
             String userInfo = new String(resultByte, StandardCharsets.UTF_8);
             JSONObject jsons = JSON.parseObject(userInfo);
             String id = jsons.getJSONObject("watermark").getString("appid");
             if (!StringUtils.equals(id, appid)) {
-                return illegalBuffer;
+                throw new WxAesException("非法密文", ILLEGAL_BUFFER);
             }
             return userInfo;
-        } else {
-            return noData;
         }
+        throw new WxAesException("数据不正确", NO_DATA);
     }
 
     /**
@@ -91,7 +105,7 @@ class WXBizDataCrypt {
                 + "20f0a04COwfneQAGGwd5oa+T8yO5hzuy"
                 + "Db/XcxxmK01EpqOyuxINew==";
         String iv = "r7BXXKkLb8qrSNn05n0qiA==";
-        WXBizDataCrypt biz = new WXBizDataCrypt(appId, sessionKey);
+        WxBizDataCrypt biz = new WxBizDataCrypt(appId, sessionKey);
         System.out.println(biz.decryptData(encryptedData, iv));
     }
 }

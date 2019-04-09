@@ -1,12 +1,12 @@
 package ltd.jezhu.promets.svc.wx.login;
 
+import ltd.jezhu.promets.dao.wx.user.WxUserInfoDao;
 import ltd.jezhu.promets.dto.base.io.InParam;
 import ltd.jezhu.promets.dto.base.io.OutParam;
 import ltd.jezhu.promets.dto.base.io.Response;
-import ltd.jezhu.promets.svc.wx.api.WxApiService;
 import ltd.jezhu.promets.dto.wx.api.WxSessionDTO;
 import ltd.jezhu.promets.dto.wx.login.WxLoginDTO;
-import ltd.jezhu.promets.dto.wx.user.WxUserInfoDTO;
+import ltd.jezhu.promets.svc.wx.api.WxApiService;
 import ltd.jezhu.promets.svc.wx.jwt.JwtService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,13 +31,19 @@ public class WxLoginSvc {
      * jwt令牌服务
      */
     private JwtService jwtService;
+    /**
+     * 注入微信用户信息dao
+     */
+    private WxUserInfoDao wxUserInfoDao;
 
     @Autowired
-    public WxLoginSvc(WxApiService wxApiService, JwtService jwtService) {
+    public WxLoginSvc(WxApiService wxApiService, JwtService jwtService, WxUserInfoDao wxUserInfoDao) {
         Assert.notNull(wxApiService, "wxApiService must not be null!");
         this.wxApiService = wxApiService;
         Assert.notNull(jwtService, "jwtService must not be null!");
         this.jwtService = jwtService;
+        Assert.notNull(wxUserInfoDao, "wxUserInfoDao must not be null!");
+        this.wxUserInfoDao = wxUserInfoDao;
     }
 
     /**
@@ -53,26 +59,21 @@ public class WxLoginSvc {
         if (null == in || StringUtils.isBlank(in.getJscode())) {
             return Response.invalid();
         }
-        try {
-            WxSessionDTO wxSessionDTO = wxApiService.jscode2session(in.getJscode());
-            if (null == wxSessionDTO) {
-                return Response.error("微信登录凭证校验失败！");
-            }
-            if (null != wxSessionDTO.getErrcode() && !wxSessionDTO.getErrcode().equals(WxSessionDTO.ErrCode.SUCCESS.getCode())) {
-                return Response.error(StringUtils.isBlank(wxSessionDTO.getErrmsg()) ? "微信登录凭证校验失败！" : wxSessionDTO.getErrmsg());
-            }
-
-            String token = jwtService.createToken(wxSessionDTO.getOpenid(), wxSessionDTO.getSessionKey());
-            return Response.success(new WxLoginDTO(token, wxSessionDTO.getOpenid()));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.exception();
+        WxSessionDTO wxSessionDTO = wxApiService.jscode2session(in.getJscode());
+        if (null == wxSessionDTO) {
+            return Response.error("微信登录凭证校验失败！");
         }
+        if (null != wxSessionDTO.getErrcode() && !wxSessionDTO.getErrcode().equals(WxSessionDTO.ErrCode.SUCCESS.getCode())) {
+            return Response.error(StringUtils.isBlank(wxSessionDTO.getErrmsg()) ? "微信登录凭证校验失败！" : wxSessionDTO.getErrmsg());
+        }
+        String token = jwtService.createToken(wxSessionDTO.getOpenid(), wxSessionDTO.getSessionKey());
+        if (StringUtils.isNotBlank(wxSessionDTO.getUnionid())) {
+            if (!wxUserInfoDao.saveUnionid(wxSessionDTO.getOpenid(), wxSessionDTO.getUnionid())) {
+                return Response.error("用户信息更新失败！");
+            }
+        }
+        return Response.success(new WxLoginDTO(token, wxSessionDTO.getOpenid()));
     }
 
-
-    public OutParam<WxUserInfoDTO> decrypt(@RequestBody InParam<WxLoginDTO> inParam) {
-        return null;
-    }
 
 }

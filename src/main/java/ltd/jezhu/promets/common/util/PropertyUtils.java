@@ -42,8 +42,17 @@ public class PropertyUtils {
                         if (!oldField.getGenericType().equals(newField.getGenericType())) {
                             continue;
                         }
+                        // 旧的属性值为null
+                        if (null == oldField.get(oldObjet)) {
+                            // 如果新的属性值不为null则覆盖
+                            if (null != newField.get(newObject)) {
+                                change = true;
+                                // 操作旧的对象将新值覆盖旧值
+                                oldField.set(oldObjet, newField.get(newObject));
+                            }
+                        }
                         // 属性类型相同则比较属性值，属性值不同则将新值覆盖旧值
-                        if (!oldField.get(oldObjet).equals(newField.get(newObject))) {
+                        else if (null != newField.get(newObject) && !oldField.get(oldObjet).equals(newField.get(newObject))) {
                             change = true;
                             // 操作旧的对象将新值覆盖旧值
                             oldField.set(oldObjet, newField.get(newObject));

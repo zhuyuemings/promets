@@ -33,7 +33,9 @@ mybatis:
     default-fetch-size: 100
     default-statement-timeout: 10
 server:
-  port: 80
+  port: 8088
+  servlet:
+    context-path: /promets
 jwt:
   config: # Here may be warning cannot resolve property, Just run and it will be disappear.
     secret: a25c31c9-5220-4757-8f4b-b9b71acd0884

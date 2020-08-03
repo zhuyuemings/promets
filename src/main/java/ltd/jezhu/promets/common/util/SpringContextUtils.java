@@ -1,14 +1,12 @@
 package ltd.jezhu.promets.common.util;
 
 import ltd.jezhu.promets.common.consts.JwtConsts;
-import ltd.jezhu.promets.common.consts.SystemConsts;
 import ltd.jezhu.promets.exception.InvalidTokenException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -27,8 +25,7 @@ public class SpringContextUtils implements ApplicationContextAware {
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        Assert.notNull(applicationContext, "applicationContext must not be null!");
-        SpringContextUtils.applicationContext = applicationContext;
+        SpringContextUtils.applicationContext = InjectUtils.check(applicationContext);
     }
 
     public static ApplicationContext getApplicationContext() {

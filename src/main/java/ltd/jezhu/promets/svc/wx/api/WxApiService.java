@@ -1,12 +1,12 @@
 package ltd.jezhu.promets.svc.wx.api;
 
+import ltd.jezhu.promets.common.util.InjectUtils;
 import ltd.jezhu.promets.conf.wx.WxConfig;
 import ltd.jezhu.promets.dto.wx.api.WxSessionDTO;
 import ltd.jezhu.promets.dto.wx.login.WxLoginDTO;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -25,12 +25,11 @@ public class WxApiService {
     /**
      * 注入微信配置
      */
-    private WxConfig wxConfig;
-    private Retrofit retrofit;
+    private final WxConfig wxConfig;
+    private final Retrofit retrofit;
 
     public WxApiService(WxConfig wxConfig) {
-        Assert.notNull(wxConfig, "wxConfig must not be null!");
-        this.wxConfig = wxConfig;
+        this.wxConfig = InjectUtils.check(wxConfig);
         retrofit = new Retrofit.Builder()
                 .baseUrl(wxConfig.getCode2SessionBaseUrl())
                 .addConverterFactory(JacksonConverterFactory.create())

@@ -2,10 +2,7 @@ package ltd.jezhu.promets.svc.wx.user;
 
 import com.alibaba.fastjson.JSON;
 import ltd.jezhu.promets.annotation.JwtTokenValidate;
-import ltd.jezhu.promets.common.util.IdUtils;
-import ltd.jezhu.promets.common.util.PropertyUtils;
-import ltd.jezhu.promets.common.util.SpringContextUtils;
-import ltd.jezhu.promets.common.util.WxBizDataCrypt;
+import ltd.jezhu.promets.common.util.*;
 import ltd.jezhu.promets.conf.wx.WxConfig;
 import ltd.jezhu.promets.dao.wx.user.WxUserInfoDao;
 import ltd.jezhu.promets.dto.base.io.InParam;
@@ -17,7 +14,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,12 +47,9 @@ public class WxUserSvc {
 
     @Autowired
     public WxUserSvc(WxUserInfoDao wxUserInfoDao, WxConfig wxConfig, JwtService jwtService) {
-        Assert.notNull(wxUserInfoDao, "wxUserInfoDao must not be null!");
-        this.wxUserInfoDao = wxUserInfoDao;
-        Assert.notNull(wxConfig, "wxConfig must not be null!");
-        this.wxConfig = wxConfig;
-        Assert.notNull(jwtService, "jwtService must not be null!");
-        this.jwtService = jwtService;
+        this.wxUserInfoDao = InjectUtils.check(wxUserInfoDao);
+        this.wxConfig = InjectUtils.check(wxConfig);
+        this.jwtService = InjectUtils.check(jwtService);
     }
 
     /**

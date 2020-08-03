@@ -1,11 +1,11 @@
 package ltd.jezhu.promets.dao.wx.user;
 
+import ltd.jezhu.promets.common.util.InjectUtils;
 import ltd.jezhu.promets.dao.base.BaseDao;
 import ltd.jezhu.promets.dto.wx.user.WxUserInfoDTO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 
 /**
  * 用户dao
@@ -16,12 +16,11 @@ import org.springframework.util.Assert;
 public class WxUserInfoDao {
 
     private final static String NAMESPACE_PREFIX = "wx.userinfo.";
-    private BaseDao baseDao;
+    private final BaseDao baseDao;
 
     @Autowired
     public WxUserInfoDao(BaseDao baseDao) {
-        Assert.notNull(baseDao, "baseDao must not be null!");
-        this.baseDao = baseDao;
+        this.baseDao = InjectUtils.check(baseDao);
     }
 
     /**

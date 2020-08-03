@@ -1,9 +1,9 @@
 package ltd.jezhu.promets.svc.wx.jwt;
 
+import ltd.jezhu.promets.common.util.InjectUtils;
 import ltd.jezhu.promets.common.util.JwtUtils;
 import ltd.jezhu.promets.conf.jwt.JwtConfig;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 
 /**
  * jwt令牌服务
@@ -15,11 +15,10 @@ public class JwtService {
     /**
      * jwt配置
      */
-    private JwtConfig jwtConfig;
+    private final JwtConfig jwtConfig;
 
     public JwtService(JwtConfig jwtConfig) {
-        Assert.notNull(jwtConfig, "jwtConfig must not be null!");
-        this.jwtConfig = jwtConfig;
+        this.jwtConfig = InjectUtils.check(jwtConfig);
     }
 
     /**

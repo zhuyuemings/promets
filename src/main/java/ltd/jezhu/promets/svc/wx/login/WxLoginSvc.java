@@ -1,5 +1,6 @@
 package ltd.jezhu.promets.svc.wx.login;
 
+import ltd.jezhu.promets.common.util.InjectUtils;
 import ltd.jezhu.promets.dao.wx.user.WxUserInfoDao;
 import ltd.jezhu.promets.dto.base.io.InParam;
 import ltd.jezhu.promets.dto.base.io.OutParam;
@@ -10,7 +11,6 @@ import ltd.jezhu.promets.svc.wx.api.WxApiService;
 import ltd.jezhu.promets.svc.wx.jwt.JwtService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,24 +26,21 @@ public class WxLoginSvc {
     /**
      * 微信接口服务
      */
-    private WxApiService wxApiService;
+    private final WxApiService wxApiService;
     /**
      * jwt令牌服务
      */
-    private JwtService jwtService;
+    private final JwtService jwtService;
     /**
      * 注入微信用户信息dao
      */
-    private WxUserInfoDao wxUserInfoDao;
+    private final WxUserInfoDao wxUserInfoDao;
 
     @Autowired
     public WxLoginSvc(WxApiService wxApiService, JwtService jwtService, WxUserInfoDao wxUserInfoDao) {
-        Assert.notNull(wxApiService, "wxApiService must not be null!");
-        this.wxApiService = wxApiService;
-        Assert.notNull(jwtService, "jwtService must not be null!");
-        this.jwtService = jwtService;
-        Assert.notNull(wxUserInfoDao, "wxUserInfoDao must not be null!");
-        this.wxUserInfoDao = wxUserInfoDao;
+        this.wxApiService = InjectUtils.check(wxApiService);
+        this.jwtService = InjectUtils.check(jwtService);
+        this.wxUserInfoDao = InjectUtils.check(wxUserInfoDao);
     }
 
     /**

@@ -1,6 +1,7 @@
 package ltd.jezhu.promets.aspect;
 
 import ltd.jezhu.promets.annotation.JwtTokenValidate;
+import ltd.jezhu.promets.common.util.InjectUtils;
 import ltd.jezhu.promets.common.util.SpringContextUtils;
 import ltd.jezhu.promets.exception.InvalidTokenException;
 import ltd.jezhu.promets.svc.wx.jwt.JwtService;
@@ -13,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 
 /**
  * 此切面用于验证请求客户端持有的jwt令牌，jwt令牌位于客户端请求头部，
@@ -35,11 +35,10 @@ public class JwtTokenAspect {
     /**
      * jwt令牌服务
      */
-    private JwtService jwtService;
+    private final JwtService jwtService;
 
     public JwtTokenAspect(JwtService jwtService) {
-        Assert.notNull(jwtService, "jwtService must not be null!");
-        this.jwtService = jwtService;
+        this.jwtService = InjectUtils.check(jwtService);
     }
 
     /**

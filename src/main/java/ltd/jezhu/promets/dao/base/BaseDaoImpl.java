@@ -2,8 +2,9 @@ package ltd.jezhu.promets.dao.base;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import ltd.jezhu.promets.exception.DaoException;
+import ltd.jezhu.promets.common.util.InjectUtils;
 import ltd.jezhu.promets.dto.base.io.PageInfo;
+import ltd.jezhu.promets.exception.DaoException;
 import org.apache.ibatis.executor.BatchResult;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.RowBounds;
@@ -13,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.Assert;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -35,8 +35,7 @@ public class BaseDaoImpl implements BaseDao {
 
     @Autowired
     public BaseDaoImpl(SqlSessionTemplate sqlSessionTemplate) {
-        Assert.notNull(sqlSessionTemplate, "sqlSessionTemplate must not be null!");
-        this.sqlSessionTemplate = sqlSessionTemplate;
+        this.sqlSessionTemplate = InjectUtils.check(sqlSessionTemplate);
     }
 
     public BaseDaoImpl() {

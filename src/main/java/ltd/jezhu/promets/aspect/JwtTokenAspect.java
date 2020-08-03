@@ -1,10 +1,10 @@
 package ltd.jezhu.promets.aspect;
 
 import ltd.jezhu.promets.annotation.JwtTokenValidate;
-import ltd.jezhu.promets.common.util.InjectUtils;
-import ltd.jezhu.promets.common.util.SpringContextUtils;
-import ltd.jezhu.promets.exception.InvalidTokenException;
-import ltd.jezhu.promets.svc.wx.jwt.JwtService;
+import ltd.jezhu.promets.base.util.InjectUtils;
+import ltd.jezhu.promets.base.util.SpringContextUtils;
+import ltd.jezhu.promets.base.exception.InvalidTokenException;
+import ltd.jezhu.promets.base.service.JwtService;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Aspect;
@@ -44,7 +44,7 @@ public class JwtTokenAspect {
     /**
      * 定义切点
      */
-    @Pointcut("execution(public * ltd.jezhu.promets.svc.*.*.*.*(..)) && @annotation(ltd.jezhu.promets.annotation.JwtTokenValidate)")
+    @Pointcut("execution(public * ltd.jezhu.promets.base.svc.*.*.*.*(..)) && @annotation(ltd.jezhu.promets.annotation.JwtTokenValidate)")
     public void tokenValidation() {
     }
 
